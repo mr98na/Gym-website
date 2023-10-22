@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OurFitnessDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Class">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TrainerID" Type="Int32" />
+    <Property Name="Text" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="BarColor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Seats" Type="Int32" />
+    <Property Name="Start" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="End" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Classes_Users" FromRole="Classes" ToRole="Users" />
+    <NavigationProperty Name="ClassesUsers" Relationship="Self.FK_ClassesUsers_Classes" FromRole="Classes" ToRole="ClassesUsers" />
+  </EntityType>
+  <EntityType Name="ClassesUser">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="ClassID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="ClassID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Class" Relationship="Self.FK_ClassesUsers_Classes" FromRole="ClassesUsers" ToRole="Classes" />
+    <NavigationProperty Name="User" Relationship="Self.FK_ClassesUsers_Users" FromRole="ClassesUsers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Trainer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="Certificates" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Experiences" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Trainers_Users" FromRole="Trainers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Classes" Relationship="Self.FK_Classes_Users" FromRole="Users" ToRole="Classes" />
+    <NavigationProperty Name="ClassesUsers" Relationship="Self.FK_ClassesUsers_Users" FromRole="Users" ToRole="ClassesUsers" />
+    <NavigationProperty Name="Trainers" Relationship="Self.FK_Trainers_Users" FromRole="Users" ToRole="Trainers" />
+    <NavigationProperty Name="Subscriptions" Relationship="OurFitnessDBModel.FK_Subscriptions_Users" FromRole="User" ToRole="Subscription" />
+  </EntityType>
+  <Association Name="FK_Classes_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Classes" Type="Self.Class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Classes">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClassesUsers_Classes">
+    <End Role="Classes" Type="Self.Class" Multiplicity="1" />
+    <End Role="ClassesUsers" Type="Self.ClassesUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Classes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ClassesUsers">
+        <PropertyRef Name="ClassID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClassesUsers_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="ClassesUsers" Type="Self.ClassesUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ClassesUsers">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trainers_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Trainers" Type="Self.Trainer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Trainers">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OurFitnessDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Classes" EntityType="Self.Class" />
+    <EntitySet Name="ClassesUsers" EntityType="Self.ClassesUser" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Trainers" EntityType="Self.Trainer" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Classes_Users" Association="Self.FK_Classes_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Classes" EntitySet="Classes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClassesUsers_Classes" Association="Self.FK_ClassesUsers_Classes">
+      <End Role="Classes" EntitySet="Classes" />
+      <End Role="ClassesUsers" EntitySet="ClassesUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClassesUsers_Users" Association="Self.FK_ClassesUsers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ClassesUsers" EntitySet="ClassesUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trainers_Users" Association="Self.FK_Trainers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Trainers" EntitySet="Trainers" />
+    </AssociationSet>
+    <EntitySet Name="Packages" EntityType="OurFitnessDBModel.Package" />
+    <EntitySet Name="Subscriptions" EntityType="OurFitnessDBModel.Subscription" />
+    <AssociationSet Name="FK_Subscriptions_Packages" Association="OurFitnessDBModel.FK_Subscriptions_Packages">
+      <End Role="Package" EntitySet="Packages" />
+      <End Role="Subscription" EntitySet="Subscriptions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscriptions_Users" Association="OurFitnessDBModel.FK_Subscriptions_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Subscription" EntitySet="Subscriptions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Package">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Duration" Type="Int32" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Subscriptions" Relationship="OurFitnessDBModel.FK_Subscriptions_Packages" FromRole="Package" ToRole="Subscription" />
+  </EntityType>
+  <EntityType Name="Subscription">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="PackageID" Type="Int32" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="JoinDate" Type="DateTime" Precision="3" />
+    <Property Name="IsPay" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Package" Relationship="OurFitnessDBModel.FK_Subscriptions_Packages" FromRole="Subscription" ToRole="Package" />
+    <NavigationProperty Name="User" Relationship="OurFitnessDBModel.FK_Subscriptions_Users" FromRole="Subscription" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Subscriptions_Packages">
+    <End Type="OurFitnessDBModel.Package" Role="Package" Multiplicity="0..1" />
+    <End Type="OurFitnessDBModel.Subscription" Role="Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Package">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="PackageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscriptions_Users">
+    <End Type="OurFitnessDBModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="OurFitnessDBModel.Subscription" Role="Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

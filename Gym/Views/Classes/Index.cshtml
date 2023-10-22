@@ -1,0 +1,260 @@
+﻿@model Gym.Models.Class
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Classes</h2>
+<div>
+    <div id="dp"></div>
+    <script src="~/js/daypilot-all.min.js?v=2023.2.463"></script>
+    @*<script src="~/js/app.js?v=2023.2.463"></script>*@
+    <script src="~/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        var trn = [];
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        const dp = new DayPilot.Calendar("dp", {
+            weekStarts: 0,
+            viewType: "Week",
+            startDate: today,
+            headerDateFormat: "dddd",
+            // headerDateFormat: "dd/MM/yyyy - dddd",
+            onEventClick: async args => {
+
+                    console.log(args.e.data)
+                    myPromise.then(
+                        async function (value) {
+                            const colors = [
+                                { name: "Blue", id: "#3c78d8" },
+                                { name: "Green", id: "#6aa84f" },
+                                { name: "Yellow", id: "#f1c232" },
+                                { name: "Red", id: "#cc0000" },
+                            ];
+
+                            const form = [
+                                { name: "Title", id: "text", disabled: true },
+                                { name: "New title", id: "text2" },
+                                { name: "Start", id: "start", type: "datetime" },
+                                { name: "End", id: "end", type: "datetime" },
+                                { name: "seats", id: "seats" },
+                                { name: "Trainer", id: "trainerId", type: "select", options: value },
+                                { name: "Color", id: "barColor", type: "select", options: colors },
+                            ];
+
+                            const modal = await DayPilot.Modal.form(form, args.e.data);
+
+                            if (modal.canceled) {
+                                return;
+                            }
+                            //if (!modal.canceled) {
+                            //    if (confirm("Do you really want to delete this event?")) {
+                            //        modal.result.seats = modal.result.seats - 1;
+                            //    }
+                            //}
+                            modal.result.text = modal.result.text2;
+                            modal.result.start = modal.result.start.value;
+                            modal.result.end = modal.result.end.value;
+                            console.log(modal.result)
+                            $.ajax({
+                                url: '/Classes/Edit',
+                                type: 'POST',
+                                data: modal.result,
+                                success: function (data) {
+                                    location.reload();
+                                },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                            dp.events.update(modal.result);
+                        },
+                        function (error) { myDisplayer(error); }
+                    );
+
+
+
+
+
+            },
+            onBeforeEventRender: args => {
+                args.data.barBackColor = "transparent";
+                if (!args.data.barColor) {
+                    args.data.barColor = "#333";
+                }
+            },
+            onTimeRangeSelected: async args => {
+                myPromise.then(
+                    async function (value) {
+                        const colors = [
+                            { name: "Blue", id: "#3c78d8" },
+                            { name: "Green", id: "#6aa84f" },
+                            { name: "Yellow", id: "#f1c232" },
+                            { name: "Red", id: "#cc0000" },
+                        ];
+                        const form = [
+                            { name: "Title", id: "text" },
+                            { name: "Seats", id: "seats" },
+                            { name: "Trainer", id: "trainerId", type: "select", options: value },
+                            { name: "Color", id: "barColor", type: "select", options: colors },
+                        ];
+
+                        const data = {
+                            text: "Event",
+                            seats: "10",
+                            barColor: "#3c78d8",
+                        };
+
+                        const modal = await DayPilot.Modal.form(form, data);
+                        dp.clearSelection();
+
+                        if (modal.result.trainerId === null) {
+                            alert("Please select a trainer");
+                            return;
+                        }
+
+                        if (modal.result.seats === null) {
+                            alert("Please enter the number of seats");
+                            return;
+                        }
+
+                        if (modal.result.text === null) {
+                            alert("Please enter the title");
+                            return;
+                        }
+
+                        if (modal.canceled) {
+                            return;
+                        }
+                        if (modal.result.seats  > 40) {
+                            alert("The maximum number of seats is 40");
+                            return;
+                        }
+
+                        dp.events.add({
+                            start: args.start,
+                            end: args.end,
+                            id: DayPilot.guid(),
+                            text: modal.result.text,
+                            seats: modal.result.seats,
+                            trainerId: modal.result.trainerId,
+                            barColor: modal.result.barColor
+                        });
+                        var model = {
+                            start: args.start.value,
+                            end: args.end.value,
+                            id: DayPilot.guid(),
+                            text: modal.result.text,
+                            seats: modal.result.seats,
+                            trainerId: modal.result.trainerId,
+                            barColor: modal.result.barColor
+                        };
+
+
+                        $.ajax({
+                            url: '/Classes/Post',
+                            type: 'POST',
+                            data: model,
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function () {
+                                alert("error");
+                            }
+                        });
+                    },
+                    function (error) {
+                        console.log(error);
+                    }
+                );
+
+            },
+            onHeaderClick: args => {
+                console.log("args", args);
+            }
+
+        });
+        dp.eventDeleteHandling = "Update";
+        dp.onEventDelete = function (args) {
+
+            if (confirm("Do you really want to delete this event?")) {
+                $.ajax({
+                    url: '/Classes/DeleteClass',
+                    type: 'POST',
+                    data: 'id=' + args.e.data.id,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+
+            } else {
+                args.preventDefault();
+            }
+
+        };
+
+        dp.init();
+
+        var events = [];
+        $.ajax({
+            url: "/Classes/GetClasses",
+            type: "GET",
+            success: function (response) {
+                $.each(response, function (index, value) {
+                    var item = {};
+                    item.id = value.id;
+                    item.end = value.end;
+                    item.start = value.start;
+                    item.text = value.text + ' - ' + value.trainer + ' (' + value.seats + ')';
+                    item.text2 = value.text;
+                    item.seats = value.seats;
+                    item.barColor = value.barColor;
+                    item.trainerId = value.trainerId;
+                    events.push(item);
+                });
+                dp.update({ events });
+            },
+            error: function (data) {
+                myReject(data.Messages);
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        let myPromise = new Promise(function (myResolve, myReject) {
+            $.ajax({
+                url: "/Users/GetTrainer",
+                type: "GET",
+                success: function (data) {
+                    dat = data
+                    myResolve(dat);
+                },
+                error: function (data) {
+                    myReject(data.Messages);
+                }
+            });
+        });
+
+                    //let myPromise2 = new Promise(function (myResolve, myReject) {
+                    //    $.ajax({
+                    //        url: "/Classes/GetClasses",
+                    //        type: "GET",
+                    //        success: function (data) {
+                    //            dat = data
+                    //            myResolve(dat);
+                    //        },
+                    //        error: function (data) {
+                    //            myReject(data.Messages);
+                    //        }
+                    //    });
+                    //});
+
+    </script>
+
+</div>

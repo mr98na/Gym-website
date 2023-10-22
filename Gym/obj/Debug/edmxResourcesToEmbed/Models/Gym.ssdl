@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GymModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CategoriesServices">
+    <Key>
+      <PropertyRef Name="CategoriesServicesID" />
+    </Key>
+    <Property Name="CategoriesServicesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryID" Type="int" Nullable="false" />
+    <Property Name="ServiceID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Communiction">
+    <Key>
+      <PropertyRef Name="CommunictionID" />
+    </Key>
+    <Property Name="CommunictionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Question" Type="nvarchar" MaxLength="500" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="TrainerID" Type="int" />
+    <Property Name="TraineeID" Type="int" />
+  </EntityType>
+  <EntityType Name="CommunictionDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CommunictionID" Type="int" />
+    <Property Name="Message" Type="nvarchar" MaxLength="500" />
+    <Property Name="SendingDate" Type="datetime" />
+    <Property Name="IsRead" Type="bit" />
+    <Property Name="FromUser" Type="int" />
+    <Property Name="ToUser" Type="int" />
+  </EntityType>
+  <EntityType Name="Equipment">
+    <Key>
+      <PropertyRef Name="EquipmentID" />
+    </Key>
+    <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Details" Type="nvarchar" MaxLength="500" />
+    <Property Name="Logo" Type="nvarchar" MaxLength="500" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Offers">
+    <Key>
+      <PropertyRef Name="OfferID" />
+    </Key>
+    <Property Name="OfferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="500" />
+    <Property Name="Details" Type="nvarchar" MaxLength="500" />
+    <Property Name="CategoryID" Type="int" />
+    <Property Name="Price" Type="money" />
+    <Property Name="Duration" Type="int" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+    <Property Name="Points" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="Programs">
+    <Key>
+      <PropertyRef Name="ProgramID" />
+    </Key>
+    <Property Name="ProgramID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SubscriptioID" Type="int" />
+    <Property Name="TrainerID" Type="int" />
+    <Property Name="Title" Type="nvarchar" MaxLength="500" />
+    <Property Name="Details" Type="nvarchar" MaxLength="500" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ProgramsEquipments">
+    <Key>
+      <PropertyRef Name="ProgramsEquipmentsID" />
+    </Key>
+    <Property Name="ProgramsEquipmentsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EquipmentID" Type="int" Nullable="false" />
+    <Property Name="ProgramID" Type="int" Nullable="false" />
+    <Property Name="Time" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Records">
+    <Key>
+      <PropertyRef Name="RecordID" />
+    </Key>
+    <Property Name="RecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProgramID" Type="int" Nullable="false" />
+    <Property Name="Details" Type="nvarchar" MaxLength="50" />
+    <Property Name="RecordDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Services">
+    <Key>
+      <PropertyRef Name="ServiceID" />
+    </Key>
+    <Property Name="ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Subscription">
+    <Key>
+      <PropertyRef Name="SubscriptioID" />
+    </Key>
+    <Property Name="SubscriptioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TraineeID" Type="int" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+    <Property Name="OfferID" Type="int" />
+    <Property Name="EmployeeID" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Information" Type="nvarchar" MaxLength="500" />
+    <Property Name="Points" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <Association Name="FK_CategoriesServices_Categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="CategoriesServices" Type="Self.CategoriesServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="CategoriesServices">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CategoriesServices_Services">
+    <End Role="Services" Type="Self.Services" Multiplicity="1" />
+    <End Role="CategoriesServices" Type="Self.CategoriesServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="ServiceID" />
+      </Principal>
+      <Dependent Role="CategoriesServices">
+        <PropertyRef Name="ServiceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Communiction_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Communiction">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Communiction_Users1">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Communiction">
+        <PropertyRef Name="TraineeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Communiction">
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Communiction">
+        <PropertyRef Name="CommunictionID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="CommunictionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="FromUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Users1">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="ToUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Offers_Categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+    <End Role="Offers" Type="Self.Offers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Offers">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Programs_Subscription">
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="0..1" />
+    <End Role="Programs" Type="Self.Programs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subscription">
+        <PropertyRef Name="SubscriptioID" />
+      </Principal>
+      <Dependent Role="Programs">
+        <PropertyRef Name="SubscriptioID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Programs_Users1">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Programs" Type="Self.Programs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Programs">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProgramsEquipments_Equipment">
+    <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+    <End Role="ProgramsEquipments" Type="Self.ProgramsEquipments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Equipment">
+        <PropertyRef Name="EquipmentID" />
+      </Principal>
+      <Dependent Role="ProgramsEquipments">
+        <PropertyRef Name="EquipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProgramsEquipments_Programs">
+    <End Role="Programs" Type="Self.Programs" Multiplicity="1" />
+    <End Role="ProgramsEquipments" Type="Self.ProgramsEquipments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Programs">
+        <PropertyRef Name="ProgramID" />
+      </Principal>
+      <Dependent Role="ProgramsEquipments">
+        <PropertyRef Name="ProgramID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Records_Programs">
+    <End Role="Programs" Type="Self.Programs" Multiplicity="1" />
+    <End Role="Records" Type="Self.Records" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Programs">
+        <PropertyRef Name="ProgramID" />
+      </Principal>
+      <Dependent Role="Records">
+        <PropertyRef Name="ProgramID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Offers">
+    <End Role="Offers" Type="Self.Offers" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Offers">
+        <PropertyRef Name="OfferID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="OfferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Users1">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="TraineeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GymModelStoreContainer">
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CategoriesServices" EntityType="Self.CategoriesServices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Communiction" EntityType="Self.Communiction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CommunictionDetails" EntityType="Self.CommunictionDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Offers" EntityType="Self.Offers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Programs" EntityType="Self.Programs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProgramsEquipments" EntityType="Self.ProgramsEquipments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Records" EntityType="Self.Records" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CategoriesServices_Categories" Association="Self.FK_CategoriesServices_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="CategoriesServices" EntitySet="CategoriesServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CategoriesServices_Services" Association="Self.FK_CategoriesServices_Services">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="CategoriesServices" EntitySet="CategoriesServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Communiction_Users" Association="Self.FK_Communiction_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Communiction" EntitySet="Communiction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Communiction_Users1" Association="Self.FK_Communiction_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Communiction" EntitySet="Communiction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Communiction" Association="Self.FK_CommunictionDetails_Communiction">
+      <End Role="Communiction" EntitySet="Communiction" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Users" Association="Self.FK_CommunictionDetails_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Users1" Association="Self.FK_CommunictionDetails_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Offers_Categories" Association="Self.FK_Offers_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Offers" EntitySet="Offers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Programs_Subscription" Association="Self.FK_Programs_Subscription">
+      <End Role="Subscription" EntitySet="Subscription" />
+      <End Role="Programs" EntitySet="Programs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Programs_Users1" Association="Self.FK_Programs_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Programs" EntitySet="Programs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProgramsEquipments_Equipment" Association="Self.FK_ProgramsEquipments_Equipment">
+      <End Role="Equipment" EntitySet="Equipment" />
+      <End Role="ProgramsEquipments" EntitySet="ProgramsEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProgramsEquipments_Programs" Association="Self.FK_ProgramsEquipments_Programs">
+      <End Role="Programs" EntitySet="Programs" />
+      <End Role="ProgramsEquipments" EntitySet="ProgramsEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Records_Programs" Association="Self.FK_Records_Programs">
+      <End Role="Programs" EntitySet="Programs" />
+      <End Role="Records" EntitySet="Records" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Offers" Association="Self.FK_Subscription_Offers">
+      <End Role="Offers" EntitySet="Offers" />
+      <End Role="Subscription" EntitySet="Subscription" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Users" Association="Self.FK_Subscription_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Subscription" EntitySet="Subscription" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Users1" Association="Self.FK_Subscription_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Subscription" EntitySet="Subscription" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

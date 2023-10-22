@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="eda95a9a239b4d2da875d04d634bba49" Name="Diagram1">
+        <EntityTypeShape EntityType="OurFitnessDBModel.Class" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.ClassesUser" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.sysdiagram" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.Trainer" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.User" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_Classes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_ClassesUsers_Classes" ManuallyRouted="false" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_ClassesUsers_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_Trainers_Users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.Package" Width="1.5" PointX="3.75" PointY="11.25" />
+        <EntityTypeShape EntityType="OurFitnessDBModel.Subscription" Width="1.5" PointX="6" PointY="0.75" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_Subscriptions_Packages" />
+        <AssociationConnector Association="OurFitnessDBModel.FK_Subscriptions_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GymModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CategoriesServices" Relationship="Self.FK_CategoriesServices_Categories" FromRole="Categories" ToRole="CategoriesServices" />
+    <NavigationProperty Name="Offers" Relationship="Self.FK_Offers_Categories" FromRole="Categories" ToRole="Offers" />
+  </EntityType>
+  <EntityType Name="CategoriesService">
+    <Key>
+      <PropertyRef Name="CategoriesServicesID" />
+    </Key>
+    <Property Name="CategoriesServicesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryID" Type="Int32" Nullable="false" />
+    <Property Name="ServiceID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_CategoriesServices_Categories" FromRole="CategoriesServices" ToRole="Categories" />
+    <NavigationProperty Name="Service" Relationship="Self.FK_CategoriesServices_Services" FromRole="CategoriesServices" ToRole="Services" />
+  </EntityType>
+  <EntityType Name="Communiction">
+    <Key>
+      <PropertyRef Name="CommunictionID" />
+    </Key>
+    <Property Name="CommunictionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Question" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="TrainerID" Type="Int32" />
+    <Property Name="TraineeID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Communiction_Users" FromRole="Communiction" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Communiction_Users1" FromRole="Communiction" ToRole="Users" />
+    <NavigationProperty Name="CommunictionDetails" Relationship="Self.FK_CommunictionDetails_Communiction" FromRole="Communiction" ToRole="CommunictionDetails" />
+  </EntityType>
+  <EntityType Name="CommunictionDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CommunictionID" Type="Int32" />
+    <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="SendingDate" Type="DateTime" Precision="3" />
+    <Property Name="IsRead" Type="Boolean" />
+    <Property Name="FromUser" Type="Int32" />
+    <Property Name="ToUser" Type="Int32" />
+    <NavigationProperty Name="Communiction" Relationship="Self.FK_CommunictionDetails_Communiction" FromRole="CommunictionDetails" ToRole="Communiction" />
+    <NavigationProperty Name="User" Relationship="Self.FK_CommunictionDetails_Users" FromRole="CommunictionDetails" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_CommunictionDetails_Users1" FromRole="CommunictionDetails" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Equipment">
+    <Key>
+      <PropertyRef Name="EquipmentID" />
+    </Key>
+    <Property Name="EquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Logo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProgramsEquipments" Relationship="Self.FK_ProgramsEquipments_Equipment" FromRole="Equipment" ToRole="ProgramsEquipments" />
+  </EntityType>
+  <EntityType Name="Offer">
+    <Key>
+      <PropertyRef Name="OfferID" />
+    </Key>
+    <Property Name="OfferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryID" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Duration" Type="Int32" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="Points" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Offers_Categories" FromRole="Offers" ToRole="Categories" />
+    <NavigationProperty Name="Subscriptions" Relationship="Self.FK_Subscription_Offers" FromRole="Offers" ToRole="Subscription" />
+  </EntityType>
+  <EntityType Name="Program">
+    <Key>
+      <PropertyRef Name="ProgramID" />
+    </Key>
+    <Property Name="ProgramID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubscriptioID" Type="Int32" />
+    <Property Name="TrainerID" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Subscription" Relationship="Self.FK_Programs_Subscription" FromRole="Programs" ToRole="Subscription" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Programs_Users1" FromRole="Programs" ToRole="Users" />
+    <NavigationProperty Name="ProgramsEquipments" Relationship="Self.FK_ProgramsEquipments_Programs" FromRole="Programs" ToRole="ProgramsEquipments" />
+    <NavigationProperty Name="Records" Relationship="Self.FK_Records_Programs" FromRole="Programs" ToRole="Records" />
+  </EntityType>
+  <EntityType Name="ProgramsEquipment">
+    <Key>
+      <PropertyRef Name="ProgramsEquipmentsID" />
+    </Key>
+    <Property Name="ProgramsEquipmentsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EquipmentID" Type="Int32" Nullable="false" />
+    <Property Name="ProgramID" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Equipment" Relationship="Self.FK_ProgramsEquipments_Equipment" FromRole="ProgramsEquipments" ToRole="Equipment" />
+    <NavigationProperty Name="Program" Relationship="Self.FK_ProgramsEquipments_Programs" FromRole="ProgramsEquipments" ToRole="Programs" />
+  </EntityType>
+  <EntityType Name="Record">
+    <Key>
+      <PropertyRef Name="RecordID" />
+    </Key>
+    <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProgramID" Type="Int32" Nullable="false" />
+    <Property Name="Details" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RecordDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Program" Relationship="Self.FK_Records_Programs" FromRole="Records" ToRole="Programs" />
+  </EntityType>
+  <EntityType Name="Service">
+    <Key>
+      <PropertyRef Name="ServiceID" />
+    </Key>
+    <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CategoriesServices" Relationship="Self.FK_CategoriesServices_Services" FromRole="Services" ToRole="CategoriesServices" />
+  </EntityType>
+  <EntityType Name="Subscription">
+    <Key>
+      <PropertyRef Name="SubscriptioID" />
+    </Key>
+    <Property Name="SubscriptioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TraineeID" Type="Int32" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="OfferID" Type="Int32" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <NavigationProperty Name="Offer" Relationship="Self.FK_Subscription_Offers" FromRole="Subscription" ToRole="Offers" />
+    <NavigationProperty Name="Programs" Relationship="Self.FK_Programs_Subscription" FromRole="Subscription" ToRole="Programs" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Subscription_Users" FromRole="Subscription" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Subscription_Users1" FromRole="Subscription" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Information" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Points" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="Communictions" Relationship="Self.FK_Communiction_Users" FromRole="Users" ToRole="Communiction" />
+    <NavigationProperty Name="Communictions1" Relationship="Self.FK_Communiction_Users1" FromRole="Users" ToRole="Communiction" />
+    <NavigationProperty Name="CommunictionDetails" Relationship="Self.FK_CommunictionDetails_Users" FromRole="Users" ToRole="CommunictionDetails" />
+    <NavigationProperty Name="CommunictionDetails1" Relationship="Self.FK_CommunictionDetails_Users1" FromRole="Users" ToRole="CommunictionDetails" />
+    <NavigationProperty Name="Programs" Relationship="Self.FK_Programs_Users1" FromRole="Users" ToRole="Programs" />
+    <NavigationProperty Name="Subscriptions" Relationship="Self.FK_Subscription_Users" FromRole="Users" ToRole="Subscription" />
+    <NavigationProperty Name="Subscriptions1" Relationship="Self.FK_Subscription_Users1" FromRole="Users" ToRole="Subscription" />
+  </EntityType>
+  <Association Name="FK_CategoriesServices_Categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="CategoriesServices" Type="Self.CategoriesService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="CategoriesServices">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Offers_Categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Offers" Type="Self.Offer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Offers">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CategoriesServices_Services">
+    <End Role="Services" Type="Self.Service" Multiplicity="1" />
+    <End Role="CategoriesServices" Type="Self.CategoriesService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="ServiceID" />
+      </Principal>
+      <Dependent Role="CategoriesServices">
+        <PropertyRef Name="ServiceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Communiction_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Communiction">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Communiction_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Communiction">
+        <PropertyRef Name="TraineeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Communiction">
+    <End Role="Communiction" Type="Self.Communiction" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Communiction">
+        <PropertyRef Name="CommunictionID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="CommunictionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="FromUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunictionDetails_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="CommunictionDetails" Type="Self.CommunictionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CommunictionDetails">
+        <PropertyRef Name="ToUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProgramsEquipments_Equipment">
+    <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+    <End Role="ProgramsEquipments" Type="Self.ProgramsEquipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Equipment">
+        <PropertyRef Name="EquipmentID" />
+      </Principal>
+      <Dependent Role="ProgramsEquipments">
+        <PropertyRef Name="EquipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Offers">
+    <End Role="Offers" Type="Self.Offer" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Offers">
+        <PropertyRef Name="OfferID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="OfferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Programs_Subscription">
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="0..1" />
+    <End Role="Programs" Type="Self.Program" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subscription">
+        <PropertyRef Name="SubscriptioID" />
+      </Principal>
+      <Dependent Role="Programs">
+        <PropertyRef Name="SubscriptioID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Programs_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Programs" Type="Self.Program" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Programs">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProgramsEquipments_Programs">
+    <End Role="Programs" Type="Self.Program" Multiplicity="1" />
+    <End Role="ProgramsEquipments" Type="Self.ProgramsEquipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Programs">
+        <PropertyRef Name="ProgramID" />
+      </Principal>
+      <Dependent Role="ProgramsEquipments">
+        <PropertyRef Name="ProgramID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Records_Programs">
+    <End Role="Programs" Type="Self.Program" Multiplicity="1" />
+    <End Role="Records" Type="Self.Record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Programs">
+        <PropertyRef Name="ProgramID" />
+      </Principal>
+      <Dependent Role="Records">
+        <PropertyRef Name="ProgramID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subscription_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Subscription">
+        <PropertyRef Name="TraineeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GymEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="CategoriesServices" EntityType="Self.CategoriesService" />
+    <EntitySet Name="Communictions" EntityType="Self.Communiction" />
+    <EntitySet Name="CommunictionDetails" EntityType="Self.CommunictionDetail" />
+    <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+    <EntitySet Name="Offers" EntityType="Self.Offer" />
+    <EntitySet Name="Programs" EntityType="Self.Program" />
+    <EntitySet Name="ProgramsEquipments" EntityType="Self.ProgramsEquipment" />
+    <EntitySet Name="Records" EntityType="Self.Record" />
+    <EntitySet Name="Services" EntityType="Self.Service" />
+    <EntitySet Name="Subscriptions" EntityType="Self.Subscription" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_CategoriesServices_Categories" Association="Self.FK_CategoriesServices_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="CategoriesServices" EntitySet="CategoriesServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Offers_Categories" Association="Self.FK_Offers_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Offers" EntitySet="Offers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CategoriesServices_Services" Association="Self.FK_CategoriesServices_Services">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="CategoriesServices" EntitySet="CategoriesServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Communiction_Users" Association="Self.FK_Communiction_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Communiction" EntitySet="Communictions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Communiction_Users1" Association="Self.FK_Communiction_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Communiction" EntitySet="Communictions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Communiction" Association="Self.FK_CommunictionDetails_Communiction">
+      <End Role="Communiction" EntitySet="Communictions" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Users" Association="Self.FK_CommunictionDetails_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunictionDetails_Users1" Association="Self.FK_CommunictionDetails_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CommunictionDetails" EntitySet="CommunictionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProgramsEquipments_Equipment" Association="Self.FK_ProgramsEquipments_Equipment">
+      <End Role="Equipment" EntitySet="Equipments" />
+      <End Role="ProgramsEquipments" EntitySet="ProgramsEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Offers" Association="Self.FK_Subscription_Offers">
+      <End Role="Offers" EntitySet="Offers" />
+      <End Role="Subscription" EntitySet="Subscriptions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Programs_Subscription" Association="Self.FK_Programs_Subscription">
+      <End Role="Subscription" EntitySet="Subscriptions" />
+      <End Role="Programs" EntitySet="Programs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Programs_Users1" Association="Self.FK_Programs_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Programs" EntitySet="Programs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProgramsEquipments_Programs" Association="Self.FK_ProgramsEquipments_Programs">
+      <End Role="Programs" EntitySet="Programs" />
+      <End Role="ProgramsEquipments" EntitySet="ProgramsEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Records_Programs" Association="Self.FK_Records_Programs">
+      <End Role="Programs" EntitySet="Programs" />
+      <End Role="Records" EntitySet="Records" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Users" Association="Self.FK_Subscription_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Subscription" EntitySet="Subscriptions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subscription_Users1" Association="Self.FK_Subscription_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Subscription" EntitySet="Subscriptions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,64 @@
+﻿@model Gym.Models.Package
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Package</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            <img src="@Url.Content(Model.Photo)" class="img-fluid" />
+
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        @if (Session["Type"] != null)
+        {
+            if (Session["Type"].ToString() == "user")
+            {
+                using (Html.BeginForm("Create", "Subscriptions", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.ID)
+                    <label class = "control-label col-md-2">Start Date</label>
+                    <input type="date" id="date" name="date" class = "form-control" required/>
+                    <input type="submit"  class="btn btn-default" value="Join"/>
+                }
+            }
+        }
+    </dl>
+</div>

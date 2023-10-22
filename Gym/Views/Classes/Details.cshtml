@@ -1,0 +1,150 @@
+﻿@model Gym.Models.Class
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Join Class</h2>
+<div>
+    <div id="dp"></div>
+    <script src="~/js/daypilot-all.min.js?v=2023.2.463"></script>
+    @*<script src="~/js/app.js?v=2023.2.463"></script>*@
+    <script src="~/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        var trn = [];
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        currentDate = yyyy + '-' + mm + '-' + dd;
+        const dp = new DayPilot.Calendar("dp", {
+            weekStarts: 0,
+            viewType: "Week",
+            startDate: currentDate,
+            headerDateFormat: "dddd",
+            // headerDateFormat: "dd/MM/yyyy - dddd",
+            onEventClick: async args => {
+                if (args.e.data.seats > 0) {
+                    const selectedDate = new Date(args.e.data.start.value);
+                    if (today < selectedDate) {
+                        myPromise.then(
+                            async function (value) {
+                                const form = [
+                                    { name: "Label", id: "text", disabled: true },
+                                    { name: "Title", id: "text2", disabled: true },
+                                    { name: "Start", id: "start", type: "datetime", disabled: true },
+                                    { name: "End", id: "end", type: "datetime", disabled: true },
+                                    { name: "seats", id: "seats", disabled: true },
+                                    { name: "Trainer", id: "trainerId", type: "select", options: value, disabled: true },
+                                ];
+
+                                const modal = await DayPilot.Modal.form(form, args.e.data);
+
+                                if (modal.canceled) {
+                                    return;
+                                }
+                                if (!modal.canceled) {
+                                    if (confirm("Do you want to reserve this seat?")) {
+                                        modal.result.seats = modal.result.seats - 1;
+                                    }
+                                }
+                                modal.result.text = modal.result.text2;
+                                modal.result.start = modal.result.start.value;
+                                modal.result.end = modal.result.end.value;
+                                $.ajax({
+                                    url: '/Classes/JoinClass',
+                                    type: 'POST',
+                                    data: 'id=' + modal.result.id,
+                                    success: function (data) {
+                                        //location.reload();
+                                        window.location.href = '/Classes/MyClass/';
+                                    },
+                                    error: function () {
+                                        alert("You are already subscribed to the class");
+                                    }
+                                });
+                                dp.events.update(modal.result);
+                            },
+                            function (error) { myDisplayer(error); }
+                        );
+
+                    } else {
+                        alert("You cannot reserve a class with a date earlier than today's date");
+                    }
+
+
+                }
+                else {
+                    alert("There are no seats available");
+                }
+
+
+            },
+            onBeforeEventRender: args => {
+                args.data.barBackColor = "transparent";
+                if (!args.data.barColor) {
+                    args.data.barColor = "#333";
+                }
+            },
+
+        });
+
+        dp.init();
+
+        var events = [];
+        $.ajax({
+            url: "/Classes/GetClasses",
+            type: "GET",
+            success: function (response) {
+                $.each(response, function (index, value) {
+                    var item = {};
+                    item.id = value.id;
+                    item.end = value.end;
+                    item.start = value.start;
+                    item.text = value.text + ' - ' + value.trainer + ' (' + value.seats + ')';
+                    item.text2 = value.text;
+                    item.seats = value.seats;
+                    item.barColor = value.barColor;
+                    item.trainerId = value.trainerId;
+                    events.push(item);
+                });
+                dp.update({ events });
+            },
+            error: function (data) {
+                myReject(data.Messages);
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        let myPromise = new Promise(function (myResolve, myReject) {
+            $.ajax({
+                url: "/Users/GetTrainer",
+                type: "GET",
+                success: function (data) {
+                    dat = data
+                    myResolve(dat);
+                },
+                error: function (data) {
+                    myReject(data.Messages);
+                }
+            });
+        });
+
+                    //let myPromise2 = new Promise(function (myResolve, myReject) {
+                    //    $.ajax({
+                    //        url: "/Classes/GetClasses",
+                    //        type: "GET",
+                    //        success: function (data) {
+                    //            dat = data
+                    //            myResolve(dat);
+                    //        },
+                    //        error: function (data) {
+                    //            myReject(data.Messages);
+                    //        }
+                    //    });
+                    //});
+
+    </script>
+
+</div>

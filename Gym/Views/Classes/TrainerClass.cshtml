@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Gym.Models.Class>
+
+@{
+    ViewBag.Title = "TrainerClass";
+}
+
+<h2>My Classes</h2>
+
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Seats</th>
+        <th>Date</th>
+        <th>Time</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img width="24" src="https://w7.pngwing.com/pngs/528/654/png-transparent-plus-and-minus-signs-addition-mathematics-plus-rectangle-plus-cross-thumbnail.png" />
+                <div style="display:none">
+                    <table class="table">
+                        <tr>
+                            <th>Trainee</th>
+                        </tr>
+                        @foreach (var item2 in item.ClassesUsers)
+                        {
+                            <tr>
+                                <td>@item2.User.Name</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seats)
+            </td>
+            <td>
+                @String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(item.Start))
+            </td>
+            <td>
+                @String.Format("{0:HH:mm}", Convert.ToDateTime(item.Start)) -  @String.Format("{0:HH:mm}", Convert.ToDateTime(item.End))
+            </td>
+        </tr>
+    }
+</table>
+
+<style type="text/css">
+    body {
+        font-family: Arial;
+        font-size: 10pt;
+    }
+
+    .Grid {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        background-color: #fff;
+        width: 100%;
+    }
+
+        .Grid th {
+            background-color: #B8DBFD;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .Grid th,
+        .Grid td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .Grid img {
+            cursor: pointer;
+        }
+
+    .ChildGrid {
+        width: 100%;
+    }
+
+        .ChildGrid th {
+            background-color: #6C6C6C;
+            color: #fff;
+            font-weight: bold;
+        }
+</style>
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("click", "img[src*='https://w7.pngwing.com/pngs/528/654/png-transparent-plus-and-minus-signs-addition-mathematics-plus-rectangle-plus-cross-thumbnail.png']", function () {
+        $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>");
+        $(this).attr("src", "https://pngimg.com/uploads/minus/minus_PNG64.png");
+    });
+    $("body").on("click", "img[src*='https://pngimg.com/uploads/minus/minus_PNG64.png']", function () {
+        $(this).attr("src", "https://w7.pngwing.com/pngs/528/654/png-transparent-plus-and-minus-signs-addition-mathematics-plus-rectangle-plus-cross-thumbnail.png");
+        $(this).closest("tr").next().remove();
+    });
+</script>

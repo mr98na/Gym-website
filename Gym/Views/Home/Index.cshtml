@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Gym.Models.Package>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(../images/1.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6 offset-sm-3 text-center slider-text">
+                            <div class="slider-text-inner">
+                                <div class="desc">
+                                    <h1 class="head-1">We aims </h1>
+                                    <p class="category"><span>To spread health and facilitate an easy way to subscribe to a gym and personal trainers.</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li style="background-image: url(../images/2.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6 offset-sm-3 text-center slider-text">
+                            <div class="slider-text-inner">
+                                <div class="desc">
+                                    <h1 class="head-1">We aims </h1>
+                                    <p class="category"><span>To improve the processes of managing and booking the classes for the clients</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div class="colorlib-intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h2 class="intro">
+                    Packages
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="colorlib-product">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-4 text-center">
+                    <div class="featured">
+                        <a href="@Url.Action("Details", "Packages",new {Id=item.ID})" class="featured-img" style="background-image: url(@item.Photo);"></a>
+                        <div class="desc">
+                            <h2><a style="color: white;" class="btn btn-primary" href="@Url.Action("Details", "Packages",new {Id=item.ID})">@item.Title</a></h2>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @*<div class="col-sm-4 text-center">
+                    <div class="featured">
+                        <a href="#" class="featured-img" style="background-image: url(../images/1.jpg);"></a>
+                        <div class="desc">
+                            <h2><a style="color: white;" class="btn btn-primary" href="#">Class</a></h2>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>

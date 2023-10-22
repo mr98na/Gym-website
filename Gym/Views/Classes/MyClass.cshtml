@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Gym.Models.ClassesUser>
+
+@{
+    ViewBag.Title = "MyClass";
+}
+
+<h2>My Class</h2>
+
+<table class="table">
+    <tr>
+
+        <th>
+            Class
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Time
+        </th>
+        <th>
+            Trainer
+        </th>
+        <th>
+            Join date
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.Text)
+            </td>
+            <td>
+                @String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(item.Class.Start))
+            </td>
+            <td>
+                @String.Format("{0:HH:mm}", Convert.ToDateTime(item.Class.Start)) -  @String.Format("{0:HH:mm}", Convert.ToDateTime(item.Class.End))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.User.Name)
+            </td>
+            <td>
+                @String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(item.Date))
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteMyClass", new { id = item.ClassID })
+            </td>
+        </tr>
+    }
+
+</table>
